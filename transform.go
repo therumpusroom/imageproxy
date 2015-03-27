@@ -28,7 +28,10 @@ import (
 const defaultQuality = 95
 
 // resample filter used when resizing images
-var resampleFilter = imaging.Lanczos
+var (
+	resampleFilter = imaging.Lanczos
+	maxSize = 1300
+)
 
 // Transform the provided image.  img should contain the raw bytes of an
 // encoded image in one of the supported formats (gif, jpeg, or png).  The
@@ -88,12 +91,12 @@ func transformImage(m image.Image, opt Options) image.Image {
 		h = int(opt.Height)
 	}
 
-	// never resize larger than the original image
-	if w > imgW {
-		w = imgW
+	// never resize larger than the limits
+	if w > maxSize {
+		w = maxSize
 	}
-	if h > imgH {
-		h = imgH
+	if h > maxSize {
+		h = maxSize
 	}
 
 	// resize
